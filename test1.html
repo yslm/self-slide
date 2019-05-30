@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <style>
+    *{
+      margin: 0;
+      padding: 0;
+    }
+    .wrap{
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      width: 100%;
+    }
+    ul{
+      width: 100%;
+      display: flex;
+      /*transition: all 0s;*/
+      transition-duration: 0s;
+    }
+    ul>li{
+      list-style: none;
+      width: 100%;
+      /*-ms-flex-negative: 0;*/
+      flex-shrink: 0; /*为了控制不缩小*/
+      z-index: 10;
+      min-height: 100px;
+      background-color: red;
+    }
+    .test2{
+      width: 100px;
+      height: 100px;
+      background-color: yellow;
+      border: 1px solid #000;
+    }
+
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <ul class="ul">
+    <li>0000001</li>
+    <li>0000002</li>
+    <li>0000003</li>
+    <li>0000004</li>
+    <li>0000005</li>
+    <li>0000006</li>
+    <li>0000007</li>
+    <li>0000008</li>
+    <li>0000009</li>
+    <li>0000010</li>
+  </ul>
+</div>
+
+
+<div class="test2"></div>
+<script>
+  var ul=document.querySelector('.ul');
+  var startX=0,moveX=0,translateX=0,index=0;
+
+  var len=document.querySelectorAll('.ul>li').length;
+  var _width=ul.offsetWidth;
+  console.log(_width);
+
+  ul.style.transform='translate(0px)';
+
+
+  ul.addEventListener('touchstart',function (e) {
+    startX=e.touches[0].clientX;
+    translateX=getTransform();
+  });
+
+  ul.addEventListener('touchmove',function (e) {
+    moveX=e.touches[0].clientX-startX;
+    ul.style.transitionDuration='250ms';
+    ul.style.transform='translate('+(translateX+moveX)+'px)';
+  })
+  ul.addEventListener('touchend',function () {
+    if(moveX<0){
+      //向左
+      if(Math.abs(moveX)>50){
+        //下一页
+        console.log('左');
+        if(index>=len-1){
+          index=len-1;
+          ul.style.transform='translate('+(_width*index*-1)+'px)';
+          return;
+        }
+        index++;
+        console.log(index);
+      }else {
+        //弹回
+        console.log('左弹回');
+      }
+      ul.style.transform='translate('+(_width*index*-1)+'px)';
+
+    }else{
+      //向右
+
+      if(Math.abs(moveX)>50){
+        //下一页
+        if(index<=0){
+          index=0;
+          ul.style.transform='translate('+(_width*index)+'px)';
+          return;
+        }
+        index--;
+        console.log('右',index);
+      }else {
+        //弹回
+        console.log('右弹回');
+      }
+      ul.style.transform='translate('+(_width*index*-1)+'px)';
+
+    }
+
+  })
+
+  function getTransform() { //这是干啥的,获取移动的距离
+    var x = ul.style.transform;
+    x = x.substring(10)
+    x = x.match(/(\S*)px/)[1]
+    return Number(x)
+  }
+</script>
+</body>
+</html>
