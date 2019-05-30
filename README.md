@@ -1,5 +1,10 @@
 # self-slide
 
+> 这里面包含了两种滑动方式
+- 一种是通过translate直接移动，还有一种是通过设置元素的scrollLeft来达到滑动的效果
+- 这里需要注意的是，直接translate的方式移动元素，可以通过设置过渡时间来实现动画效果
+- 通过scrollLeft的方式的话，没有动画效果，需要封装一个函数，不停的增加scrollLeft的值来达到模拟动画的效果
+
 > A Vue.js project
 
 ## Build Setup
